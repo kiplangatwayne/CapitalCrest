@@ -1,12 +1,7 @@
 import datetime
-# from deposit import Deposit
-# from models import db  # Import your SQLAlchemy database instance
-from models.user import User  # Import the User model
-from app import app  # Import your Flask app instance
-# Adjust import statements based on the actual directory structure
+from .models.user import User
 from Backend.models.deposit import Deposit
-from Backend.models.user import User
-from Backend.app import app
+from app import db, app
 
 # Function to seed the database with dummy users
 def seed_users():
