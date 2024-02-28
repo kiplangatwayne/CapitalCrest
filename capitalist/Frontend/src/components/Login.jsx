@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "../css/Login.css";
 
 function Login() {
@@ -37,6 +37,14 @@ function Login() {
     }
   };
 
+  useEffect(() => {
+    document.body.classList.add("body-with-background");
+
+    return () => {
+      document.body.classList.remove("body-with-background");
+    };
+  }, []);
+
   return (
     <>
       <div className="login-div">
@@ -61,7 +69,7 @@ function Login() {
               required
             />
             <input
-              type="text"
+              type="password"
               placeholder="Password"
               className="my-input"
               value={password}
@@ -71,7 +79,7 @@ function Login() {
             <button type="submit">Login</button>
           </form>
           <hr />
-          <p className="center-aligned">Don't have an account? <a href="/sign-up">Sign up</a></p>
+          <p className="center-aligned">Don't have an account? <a href="/">Sign up</a></p>
         </div>
       </div>
     </>

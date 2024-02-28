@@ -1,3 +1,7 @@
+.body-with-background {
+    background-image: url('../img/bg-img.jpeg.jpeg');
+}
+
 /* Login Div */
 .login-div{
     margin: 40px auto;
@@ -8,11 +12,11 @@
 .login-container{
     max-width: 350px;
     width: 85%;
-    background-color: rgba(0, 0, 0, 0.3);
-    color: white;
+    background-color: rgba(255, 255, 255, 0.5);
+    color: black;
     display: flex;
     flex-direction: column;
-    margin: 0px auto;
+    margin: 15vh auto auto;
 }
 
 .login-container form{
@@ -32,13 +36,12 @@
 }
 
 .login-container input{
-    background-color:gray;
+    background-color: white;
     font-size: 16px;
-    color: white;
 }
 
 .login-container input::placeholder{ 
-    color: white;
+    color: black;
     font-style: italic;
 }
 
@@ -49,7 +52,6 @@
 }
 
 .login-container h3{
-    color: black;
     font-size: 30px;
 }
 
@@ -58,7 +60,6 @@
 }
 
 hr{
-    color: red;
     border: 1px solid black;
     margin: 10px auto;
     width:90%;

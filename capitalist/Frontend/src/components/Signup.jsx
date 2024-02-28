@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "../css/Signup.css";
 
 function SignUp() {
@@ -7,39 +7,44 @@ function SignUp() {
   const [phoneNo, setPhoneNo] = useState("");
   const [password, setPassword] = useState("");
 
-  // Function to format phone number as user types
   const handlePhoneChange = (e) => {
     const formattedPhoneNumber = e.target.value
-      .replace(/\D/g, "") // Remove non-numeric characters
-      .replace(/(\d{3})(\d{3})(\d{4})/, "$1-$2-$3"); // Add dashes
+      .replace(/\D/g, "")
+      .replace(/(\d{3})(\d{3})(\d{4})/, "$1-$2-$3");
     setPhoneNo(formattedPhoneNumber);
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    const response = await fetch('/sign-up', {
-      method: 'POST',
+    const response = await fetch("/sign-up", {
+      method: "POST",
       headers: {
-        'Content-Type': 'application/json'
+        "Content-Type": "application/json",
       },
       body: JSON.stringify({
         name: name,
         email: email,
         number: phoneNo,
-        password: password
-      })
+        password: password,
+      }),
     });
 
     const data = await response.json();
     if (response.ok) {
-      // Handle successful sign-up
-      console.log(data.message); // or redirect user
+      console.log(data.message);
     } else {
-      // Handle sign-up error
       console.error(data.message);
     }
   };
+
+  useEffect(() => {
+    document.body.classList.add("body-with-background");
+
+    return () => {
+      document.body.classList.remove("body-with-background");
+    };
+  }, []);
 
   return (
     <>
@@ -71,7 +76,7 @@ function SignUp() {
             required
           />
           <input
-            type="text"
+            type="password"
             placeholder="Password"
             className="my-input"
             value={password}
@@ -80,6 +85,10 @@ function SignUp() {
           />
           <button type="submit">Sign Up</button>
         </form>
+        <hr />
+        <p className="center-aligned">
+          Already have an account? <a href="/login">Login</a>
+        </p>
       </div>
     </>
   );
