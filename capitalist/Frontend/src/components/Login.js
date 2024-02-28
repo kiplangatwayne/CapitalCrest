@@ -1,80 +1,88 @@
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-// import './css/Login.css';
+import React, { useState, useEffect } from "react";
+import "../css/Login.css";
 
 function Login() {
-  const navigate = useNavigate();
-  const [formData, setFormData] = useState({ email: '', number: '', password: '' });
-  const [error, setError] = useState(null);
+  const [email, setEmail] = useState("");
+  const [number, setNumber] = useState("");
+  const [password, setPassword] = useState("");
 
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData({
-      ...formData,
-      [name]: value,
-    });
+  // Function to format phone number as user types
+  const handlePhoneChange = (e) => {
+    const formattedPhoneNumber = e.target.value
+      .replace(/\D/g, "") // Remove non-numeric characters
+      .replace(/(\d{3})(\d{3})(\d{4})/, "$1-$2-$3"); // Add dashes
+    setNumber(formattedPhoneNumber);
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    try {
-      const response = await fetch('http://127.0.0.1:5000/login', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(formData),
-      });
+    const response = await fetch('/login', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        email: email,
+        number: number,
+        password: password
+      })
+    });
 
-      if (response.ok) {
-        const data = await response.json();
-        localStorage.setItem('token', data.token); // Store token in localStorage
-        navigate('/dashboard');
-      } else {
-        const data = await response.json();
-        setError(data.message);
-      }
-    } catch (error) {
-      setError('An error occurred. Please try again later.');
+    const data = await response.json();
+    if (response.ok) {
+      console.log(data.message); 
+    } else {
+      console.error(data.message);
     }
   };
 
+  useEffect(() => {
+    document.body.classList.add("body-with-background");
+
+    return () => {
+      document.body.classList.remove("body-with-background");
+    };
+  }, []);
+
   return (
-    <div className="form-container">
-      <h1>Login</h1>
-      <form onSubmit={handleSubmit}>
-        {error && <p className="error-message">{error}</p>}
-        <div className="form-group">
-          <input
-            type="email"
-            name="email"
-            value={formData.email}
-            placeholder="Email"
-            onChange={handleChange}
-          />
+    <>
+      <div className="login-div">
+        <div className="login-container">
+          <h3 className="center-aligned">Account Login</h3>
+          <form onSubmit={handleSubmit}>
+            <input
+              type="text"
+              placeholder="Email"
+              className="my-input"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              required
+            />
+            <input
+              type="tel"
+              placeholder="Phone Number"
+              pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}"
+              className="my-input"
+              value={number}
+              onChange={handlePhoneChange}
+              required
+            />
+            <input
+              type="text"
+              placeholder="Password"
+              className="my-input"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              required
+            />
+            <button type="submit">Login</button>
+          </form>
+          <hr />
+          <p className="center-aligned">Don't have an account? <a href="/">Register</a></p>
         </div>
-        <div className="form-group">
-          <input
-            type="text"
-            name="number"
-            value={formData.number}
-            placeholder="Number"
-            onChange={handleChange}
-          />
-        </div>
-        <div className="form-group">
-          <input
-            type="password"
-            name="password"
-            placeholder="Password"
-            value={formData.password}
-            onChange={handleChange}
-          />
-        </div>
-        <button type="submit">Submit</button>
-      </form>
-    </div>
+      </div>
+    </>
   );
 }
 

@@ -1,54 +1,67 @@
-/* CSS for Register component */
+.body-with-background {
+  background-image: url('../img/bg-img.jpeg');
+}
 
-/* Container styles */
-.form-container {
-    max-width: 400px;
-    margin: 0 auto;
-    padding: 20px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    background-color: #f9f9f9;
-  }
+.sign-up-container{
+  max-width: 550px;
+  width: 85%;
+  color: black;
+  display: flex;
+  flex-direction: column;
+  margin: 15vh auto auto;
+  background-color: rgba(255, 255, 255, 0.5);
+}
+
+.sign-up-container input, .sign-up-container button, .sign-up-container{
+  border-radius: 20px;
+  border: 1px solid black;
+  padding: 7px;
+}
+
+.sign-up-container input, .sign-up-container button{
+  margin: 10px;
+  font-size: 14px;
+}
+
+.sign-up-container input{
+  font-size: 16px;
+}
+
+.sign-up-container button{
+  background-color: blue;
+  color: white;
   
-  /* Heading styles */
-  .form-container h1 {
-    text-align: center;
-    margin-bottom: 20px;
-  }
-  
-  /* Form group styles */
-  .form-group {
-    margin-bottom: 15px;
-  }
-  
-  /* Input field styles */
-  .form-group input {
-    width: 100%;
-    padding: 10px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-  }
-  
-  /* Button styles */
-  .form-container button {
-    width: 100%;
-    padding: 10px;
-    border: none;
-    border-radius: 5px;
-    background-color: #007bff;
-    color: #fff;
-    cursor: pointer;
-  }
-  
-  /* Success message styles */
-  .success-message {
-    color: green;
-    margin-bottom: 10px;
-  }
-  
-  /* Error message styles */
-  .error-message {
-    color: red;
-    margin-bottom: 10px;
-  }
-  
+}
+
+.sign-up-heading{
+  text-align: center;
+  font-size: 30px;
+}
+
+.sign-up-container input::placeholder{ 
+  color: black;
+  font-style: italic;
+}
+
+.sign-up-container button{
+  background-color: blue;
+  color: white;
+  margin: 20px;
+}
+
+
+.sign-up-container form{
+  display: flex;
+  flex-direction: column;
+}
+
+p{
+  font-size: large;
+  font-weight: 600;
+}
+
+hr{
+  border: 1px solid black;
+  margin: 10px auto;
+  width:90%;
+}

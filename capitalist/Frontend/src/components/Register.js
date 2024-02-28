@@ -1,90 +1,99 @@
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-// import './css/Register.css';
-function Register() {
-  const navigate = useNavigate();
-  const [formData, setFormData] = useState({ name: '', email: '', number: '', password: '' });
-  const [error, setError] = useState(null);
-  const [successMessage, setSuccessMessage] = useState('');
+import React, { useState , useEffect} from "react";
+import "../css/Register.css";
 
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData({
-      ...formData,
-      [name]: value,
-    });
+function Register() {
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [phoneNo, setPhoneNo] = useState("");
+  const [password, setPassword] = useState("");
+
+  // Function to format phone number as user types
+  const handlePhoneChange = (e) => {
+    const formattedPhoneNumber = e.target.value
+      .replace(/\D/g, "") // Remove non-numeric characters
+      .replace(/(\d{3})(\d{3})(\d{4})/, "$1-$2-$3"); // Add dashes
+    setPhoneNo(formattedPhoneNumber);
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    try {
-      const response = await fetch('http://127.0.0.1:5000/register', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(formData),
-      });
+    const response = await fetch('/register', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        name: name,
+        email: email,
+        number: phoneNo,
+        password: password
+      })
+    });
 
-      if (response.ok) {
-        const data = await response.json();
-        setSuccessMessage(data.message);
-        navigate('/login');
-      } else {
-        const data = await response.json();
-        setError(data.message);
-      }
-    } catch (error) {
-      setError('An error occurred. Please try again later.');
+    const data = await response.json();
+    if (response.ok) {
+      // Handle successful sign-up
+      console.log(data.message); // or redirect user
+    } else {
+      // Handle sign-up error
+      console.error(data.message);
     }
   };
 
+  useEffect(() => {
+    document.body.classList.add("body-with-background");
+
+    return () => {
+      document.body.classList.remove("body-with-background");
+    };
+  }, []);
+
   return (
-    <div className="form-container">
-      <h1>Register</h1>
-      <form onSubmit={handleSubmit}>
-        {successMessage && <p className="success-message">{successMessage}</p>}
-        {error && <p className="error-message">{error}</p>}
-        <div className="form-group">
+    <>
+      <div className="sign-up-container">
+        <h2 className="sign-up-heading">Register</h2>
+        <form onSubmit={handleSubmit}>
           <input
             type="text"
-            name="name"
-            value={formData.name}
-            placeholder="Name"
-            onChange={handleChange}
+            placeholder="User Name"
+            className="my-input"
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+            required
           />
-        </div>
-        <div className="form-group">
           <input
-            type="email"
-            name="email"
-            value={formData.email}
+            type="text"
             placeholder="Email"
-            onChange={handleChange}
+            className="my-input"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            required
           />
-        </div>
-        <div className="form-group">
+          <input
+            type="tel"
+            placeholder="Phone Number"
+            pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}"
+            value={phoneNo}
+            onChange={handlePhoneChange}
+            required
+          />
           <input
             type="text"
-            name="number"
-            value={formData.number}
-            placeholder="Number"
-            onChange={handleChange}
-          />
-        </div>
-        <div className="form-group">
-          <input
-            type="password"
-            name="password"
             placeholder="Password"
-            value={formData.password}
-            onChange={handleChange}
+            className="my-input"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            required
           />
-        </div>
-        <button type="submit">Submit</button>
-      </form>
-    </div>
+          <button type="submit">Register</button>
+        </form>
+        <hr />
+        <p className="center-aligned">
+          Already have an account? <a href="/login">Login</a>
+        </p>
+      </div>
+    </>
   );
 }
 
